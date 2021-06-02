@@ -1,0 +1,23 @@
+{
+  "name": "neuxron",
+  "version": "1.0.0",
+  "description": "node neuron utility",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zwerb/neuxron.git"
+  },
+  "keywords": [
+    "neuron",
+    "node"
+  ],
+  "author": "sypogge",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/zwerb/neuxron/issues"
+  },
+  "homepage": "https://github.com/zwerb/neuxron#readme"
+}
