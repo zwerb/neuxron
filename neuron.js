@@ -1,21 +1,21 @@
-"use strict"; 
+/**
+ * @license
+ * Copyright Zwerb LLC. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://raw.githubusercontent.com/zwerb/node_neuron/master/LICENSE
+ */
 
-    class Neuron {
+class Neuron {
+  static __id = 0;
 
-       constructor(number) {
+  constructor() {
+    this._id = Neuron.__id++;
+  }
 
-           this.number = number;
+  get id() {
+    return this._id;
+  }
+}
 
-       }
-
-       /* This function will return the square of the number that the constructor of this class receives.*/
-
-       getNumber(){
-       
-          return this.number;
-
-       }
-
-    }
-
-    module.exports = Neuron;
+module.exports = Neuron;
