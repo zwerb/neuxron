@@ -18,6 +18,7 @@ class Neuron {
     this._axon_terminals = [];
     this._potential = 0;
     this._threshold = 1;
+    this._is_firing = false;
   }
 
   get id() {
@@ -40,6 +41,18 @@ class Neuron {
     return this._threshold;
   }
 
+  get is_firing() {
+    return this._is_firing;
+  }
+
+  set is_firing(is_firing) {
+    this._is_firing = is_firing;
+  }
+
+  set potential(potential) {
+    this._potential = potential;
+  }
+
   get connection_ids() {
     return this.axon_terminals.map(
       (axon_terminal) => axon_terminal.connected_to.id
@@ -47,11 +60,15 @@ class Neuron {
   }
 
   add_dendrite(connected_to = null) {
-    return this.dendrites.push(new Dendrite(this, connected_to));
+    let new_dendrite = new Dendrite(this, connected_to);
+    this.dendrites.push(new_dendrite);
+    return new_dendrite;
   }
 
   add_axon_terminal(connected_to = null) {
-    return this.axon_terminals.push(new Axon_Terminal(this, connected_to));
+    let new_axon_terminal = new Axon_Terminal(this, connected_to);
+    this.axon_terminals.push(new_axon_terminal);
+    return new_axon_terminal;
   }
 
   add_connection(neuron) {
@@ -62,12 +79,14 @@ class Neuron {
     this.axon_terminals.forEach((axon_terminal) => {
       axon_terminal.fire();
     });
+    this.is_firing = true;
   }
 
   inhibit() {
     this.axon_terminals.forEach((axon_terminal) => {
       axon_terminal.inhibit();
     });
+    this.is_firing = false;
   }
 
   regress() {
@@ -77,11 +96,16 @@ class Neuron {
   // calculate an instant / step (add inputs, process, outputs)
   step() {
     let temp_potential = this.dendrites.reduce((accumulator, dendrite) => {
-      accumulator + dendrite.output;
-    });
+      accumulator = accumulator + dendrite.output;
+      return accumulator;
+    }, 0);
 
-    if (temp_potential > this.threshold) {
+    this.potential = temp_potential;
+
+    if (this.potential > this.threshold) {
       this.fire();
+    } else if (this.is_firing) {
+      this.inhibit();
     }
 
     this.regress();

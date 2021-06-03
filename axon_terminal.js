@@ -11,7 +11,6 @@ class Axon_Terminal {
 
   constructor(parent_neuron, connected_to = null) {
     this._id = Axon_Terminal.__id++;
-    this._potential = 0;
     this._is_firing = false;
     this._parent_neuron = parent_neuron;
     this._connected_to = connected_to;
