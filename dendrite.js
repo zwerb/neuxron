@@ -11,7 +11,7 @@ class Dendrite {
 
   constructor(parent_neuron, connected_to = null) {
     this._id = Dendrite.__id++;
-    this._threshold = 0;
+    this._weight = 0;
     this._is_firing = false;
     this._parent_neuron = parent_neuron;
     this._connected_to = connected_to;
@@ -21,8 +21,8 @@ class Dendrite {
     return this._id;
   }
 
-  get threshold() {
-    return this._threshold;
+  get weight() {
+    return this._weight;
   }
 
   get is_firing() {
@@ -34,6 +34,15 @@ class Dendrite {
   }
 
   get connected_to() {
+    return this._connected_to;
+  }
+
+  get output(){
+    return this.is_firing ? this.weight : 0;
+  }
+
+  set connected_to(axon_terminal) {
+    this._connected_to = axon_terminal
     return this._connected_to;
   }
 
