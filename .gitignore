@@ -105,3 +105,4 @@ dist
 
 # Non-git Test
 nongittest.js
+jasmine/

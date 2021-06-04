@@ -1,3 +1,3 @@
-const neuron = require("./neuron");
+const neural_circuit = require("./src/neural_circuit");
 
-module.exports = neuron;
+module.exports = neural_circuit;

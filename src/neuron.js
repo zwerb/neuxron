@@ -6,8 +6,16 @@
  * found in the LICENSE file at https://raw.githubusercontent.com/zwerb/node_neuron/master/LICENSE
  */
 
+ const getRandomFloatBetween = (x, y) => {
+  return Math.random() * (y - x) + x;
+};
+
+const MIN_WEIGHT = 1.0
+const MAX_WEIGHT = -1.0
+
 const Axon_Terminal = require("./axon_terminal");
 const Dendrite = require("./dendrite");
+const Neural_Layer = require("./neural_layer");
 
 class Neuron {
   static __id = 0;
@@ -75,6 +83,12 @@ class Neuron {
     neuron.add_dendrite(this.add_axon_terminal(neuron));
   }
 
+  set_random_dendrite_weights(min_weight = MIN_WEIGHT, max_weight = MAX_WEIGHT) {
+    this.dendrites.forEach((dendrite) => {
+      dendrite.weight = getRandomFloatBetween(min_weight, max_weight);
+    });
+  };
+
   fire() {
     this.axon_terminals.forEach((axon_terminal) => {
       axon_terminal.fire();
@@ -108,8 +122,28 @@ class Neuron {
       this.inhibit();
     }
 
+    // need to figure out how to dampen signal after firing
     this.regress();
   }
 }
 
-module.exports = Neuron;
+(function () {
+  // Establish the root object, `window` in the browser, or `global` on the server.
+  var root = this;
+
+  // Create a reference to this
+  var _ = new Object();
+
+  var isNode = false;
+
+  // Export the Underscore object for **CommonJS**, with backwards-compatibility
+  // for the old `require()` API. If we're not in CommonJS, add `_` to the
+  // global object.
+  if (typeof module !== "undefined" && module.exports) {
+    module.exports = Neuron;
+    root._ = _;
+    isNode = true;
+  } else {
+    root._ = _;
+  }
+})();
