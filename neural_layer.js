@@ -6,27 +6,27 @@
  * found in the LICENSE file at https://raw.githubusercontent.com/zwerb/node_neuron/master/LICENSE
  */
 
-const Neural_Layer = require("./neural_layer");
+const Neuron = require("./neuron");
 
-class Neural_Circuit {
+class Neural_Layer {
   static __id = 0;
 
   constructor() {
-    this._id = Neural_Circuit.__id++;
-    this._neural_layers = [];
+    this._id = Neural_Layer.__id++;
+    this._neurons = [];
   }
 
   get id() {
     return this._id;
   }
 
-  get neural_layers(){
-    return this._neural_layers;
+  get neurons(){
+    return this._neurons;
   }
 
-  add_neural_layer(){
-    this._neural_layers.push(new Neural_Layer())
+  add_neuron(){
+    this._neurons.push(new Neuron())
   }
 }
 
-module.exports = Neural_Circuit;
+module.exports = Neural_Layer;
