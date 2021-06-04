@@ -72,12 +72,14 @@ class Neural_Circuit {
   connect_layer_A_to_B = (layerA, layerB, max_connections_factor = 1) => {
     let layerA_length = layerA.neurons.length;
     let layerB_length = layerB.neurons.length;
+    let num_max_connections = layerA_length * max_connections_factor;
+
     layerA.neurons.forEach((neuron, index) => {
       // create a random index map of connections
       let connections_array = getRandomArrayOfLengthBetween(
         0,
         layerB_length - 1,
-        getRandomIntBetween(0, layerA_length * max_connections_factor)
+        getRandomIntBetween(0, num_max_connections)
       );
       connections_array.forEach((connection_id) => {
         neuron.add_connection(layerB.neurons[connection_id]);
@@ -91,12 +93,13 @@ class Neural_Circuit {
   // max_connections_factor = 1 (the maximum number of connections neuron can have as a factor of the size of the layer)
   // overlapping = "yes" (a neuron can be connected to another neuron multiple times)
   connect_all_layers(
+    max_connections_factor = 1,
     order = "linear",
     style = "random",
-    max_connections_factor = 1,
     overlapping = "yes"
   ) {
     let run_times = this.neural_layers.length - 1;
+
     this.neural_layers.forEach((neural_layer, index) => {
       if (index < run_times) {
         this.connect_layer_A_to_B(
@@ -106,6 +109,19 @@ class Neural_Circuit {
         );
       }
     });
+  }
+
+  connect_tail_to_head(
+    max_connections_factor = 1,
+    order = "linear",
+    style = "random",
+    overlapping = "yes"
+  ) {
+    this.connect_layer_A_to_B(
+      this.neural_layers[this.neural_layers.length-1],
+      this.neural_layers[0],
+      max_connections_factor
+    );
   }
 
   set_all_layers_random_weights(min_weight, max_weight) {
@@ -136,10 +152,29 @@ class Neural_Circuit {
     return layer_firing_grids;
   }
 
+  get_layer_property_grids(property) {
+    let layer_property_grids = [];
+    this.neural_layers.forEach((neural_layer) => {
+      layer_property_grids.push(neural_layer.get_layer_property_grid(property));
+    });
+    return layer_property_grids;
+  }
+
+  display_layer_property_grids(property) {
+    let divider = "-----!----#----$-----";
+    this.get_layer_property_grids(property).forEach((grid, index) => {
+      let display_divider = divider.replace("!", `Layer: ${index}`);
+      console.log(display_divider);
+      grid.forEach((row) => {
+        console.log(row.join("|"));
+      });
+    });
+  }
+
   display_layer_firing_grids() {
-    let divider = "-----!----#----$-----"
-    this.get_layer_firing_grids().forEach((grid,index) => {
-      let display_divider = divider.replace('!',`Layer: ${index}`)
+    let divider = "-----!----#----$-----";
+    this.get_layer_firing_grids().forEach((grid, index) => {
+      let display_divider = divider.replace("!", `Layer: ${index}`);
       console.log(display_divider);
       grid.forEach((row) => {
         console.log(row.join("-"));

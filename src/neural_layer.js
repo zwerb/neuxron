@@ -77,6 +77,25 @@ class Neural_Layer {
     });
   };
 
+  get_layer_property_grid(property){
+    let grid_length = this.neurons.length;
+    let num_cols = Math.ceil(Math.sqrt(grid_length));
+    let num_rows = Math.floor(Math.sqrt(grid_length));
+    let index = -1;
+    return Array.from({ length: num_rows }, () =>
+      Array.from({ length: num_cols }, () => {
+        index = index + 1;
+        return this.neurons[index] ? this.neurons[index][property] : ".";
+      })
+    );
+  };
+
+  display_layer_property_grid = (property) => {
+    this.get_layer_property_grid(property).forEach((row) => {
+      console.log(row.join("-"));
+    });
+  };
+
 }
 
 (function () {
