@@ -1,17 +1,27 @@
 # neuxron
 
 ## to install
+```
+git clone https://github.com/zwerb/neuxron.git
+
+cd neuxron
+
+npm test
 
 ```
-npm install --save [https://github.com/zwerb/neuxron.git]
 
-need to install a remote 
+## once this becomes a package
+
+```
+instructions will be here
 
 ```
 
 ## todo
 
-merge all into neural circuit
+do input and output
+
+do learning
 
 make a visualization
 
