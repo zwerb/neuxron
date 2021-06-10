@@ -6,6 +6,8 @@ git clone https://github.com/zwerb/neuxron.git
 
 cd neuxron
 
+npm install
+
 npm test
 
 ```

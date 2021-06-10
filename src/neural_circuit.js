@@ -30,6 +30,7 @@ class Neural_Circuit {
   constructor() {
     this._id = Neural_Circuit.__id++;
     this._neural_layers = [];
+    this._epoch = 0;
   }
 
   get id() {
@@ -38,6 +39,14 @@ class Neural_Circuit {
 
   get neural_layers() {
     return this._neural_layers;
+  }
+
+  get epoch() {
+    return this._epoch;
+  }
+
+  increment_epoch() {
+    this._epoch++;
   }
 
   add_neural_layer(neural_layer = null) {
@@ -118,7 +127,7 @@ class Neural_Circuit {
     overlapping = "yes"
   ) {
     this.connect_layer_A_to_B(
-      this.neural_layers[this.neural_layers.length-1],
+      this.neural_layers[this.neural_layers.length - 1],
       this.neural_layers[0],
       max_connections_factor
     );
@@ -142,6 +151,20 @@ class Neural_Circuit {
         neural_layer.step_linear();
       }
     });
+    this.increment_epoch();
+  }
+
+  step_circuit_linear_times(num_times = 1, isSeed = false) {
+    for (let step = 0; step < num_times; step++) {
+      this.neural_layers.forEach((neural_layer, index) => {
+        if (isSeed && index == 0) {
+          //
+        } else {
+          neural_layer.step_linear();
+        }
+      });
+      this.increment_epoch();
+    }
   }
 
   get_layer_firing_grids() {
@@ -163,7 +186,7 @@ class Neural_Circuit {
   display_layer_property_grids(property) {
     let divider = "-----!----#----$-----";
     this.get_layer_property_grids(property).forEach((grid, index) => {
-      let display_divider = divider.replace("!", `Layer: ${index}`);
+      let display_divider = divider.replace("!", `Epoch: ${this.epoch}`).replace("#", `Layer: ${index}`);
       console.log(display_divider);
       grid.forEach((row) => {
         console.log(row.join("|"));
@@ -174,7 +197,7 @@ class Neural_Circuit {
   display_layer_firing_grids() {
     let divider = "-----!----#----$-----";
     this.get_layer_firing_grids().forEach((grid, index) => {
-      let display_divider = divider.replace("!", `Layer: ${index}`);
+      let display_divider = divider.replace("!", `Epoch: ${this.epoch}`).replace("#", `Layer: ${index}`);
       console.log(display_divider);
       grid.forEach((row) => {
         console.log(row.join("-"));
